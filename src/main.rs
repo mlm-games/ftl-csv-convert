@@ -235,11 +235,10 @@ fn cmd_csv2ftl(locales_dir: &Path, csv_path: &Path) -> Result<(), String> {
             if !is_valid_ftl_id(key) {
                 continue;
             }
-            if let Some(v) = table.translations.get(key).and_then(|m| m.get(loc)) {
-                if !v.is_empty() {
+            if let Some(v) = table.translations.get(key).and_then(|m| m.get(loc))
+                && !v.is_empty() {
                     messages.insert(key.clone(), v.clone());
                 }
-            }
         }
 
         let dir = locales_dir.join(loc);
