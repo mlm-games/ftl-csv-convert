@@ -4,11 +4,37 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (e.g. 1.2.3). Leave empty for latest release"
+        required: false
+        default: ""
+        type: string
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.resolve.outputs.version }}
+    steps:
+      - uses: actions/github-script@v7
+        id: resolve
+        with:
+          script: |
+            const event = context.eventName;
+            let v = '';
+            if (event === 'release') {
+              v = context.payload.release?.tag_name || '';
+            } else if (event === 'workflow_dispatch') {
+              v = context.payload.inputs?.version || '';
+            }
+            core.setOutput('version', v.replace(/^v/, ''));
+
   aur:
+    needs: prepare
     uses: mlm-games/ci/.github/workflows/aur-upload.yml@main
     with:
+      version: ${{ needs.prepare.outputs.version }}
       pkgname: ftl-csv-convert-bin
       pkgdesc: "Bidirectional converter between Fluent (.ftl) locale trees and a single CSV"
       binary-name: ftl-csv-convert-linux-x86_64
