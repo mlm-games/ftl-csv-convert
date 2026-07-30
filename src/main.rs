@@ -8,7 +8,7 @@ use std::io::{self, Write};
 use std::path::{Path, PathBuf};
 use std::process;
 
-use csv_io::{read_translations_csv, write_translations_csv, CsvTable};
+use csv_io::{CsvTable, read_translations_csv, write_translations_csv};
 use ftl::{is_valid_ftl_id, parse_ftl_file, render_ftl};
 
 const DEFAULT_LOCALES_DIR: &str = "assets/locales";
@@ -125,9 +125,9 @@ fn cmd_ftl2csv(
     }
 
     let mut dest: Box<dyn Write> = match out_path {
-        Some(p) => Box::new(
-            fs::File::create(p).map_err(|e| format!("create {}: {e}", p.display()))?,
-        ),
+        Some(p) => {
+            Box::new(fs::File::create(p).map_err(|e| format!("create {}: {e}", p.display()))?)
+        }
         None => Box::new(io::stdout()),
     };
 
@@ -179,9 +179,7 @@ fn load_locales_dir(locales_dir: &Path) -> Result<CsvTable, String> {
 
         let ftl_path = path.join(FTL_FILENAME);
         if !ftl_path.is_file() {
-            eprintln!(
-                "warning: skipping locale '{locale}': missing {FTL_FILENAME}"
-            );
+            eprintln!("warning: skipping locale '{locale}': missing {FTL_FILENAME}");
             continue;
         }
 
@@ -249,11 +247,7 @@ fn cmd_csv2ftl(locales_dir: &Path, csv_path: &Path) -> Result<(), String> {
         let ftl_path = dir.join(FTL_FILENAME);
         let body = render_ftl(&messages, &table.contexts);
         fs::write(&ftl_path, body).map_err(|e| format!("write {}: {e}", ftl_path.display()))?;
-        eprintln!(
-            "wrote {} messages → {}",
-            messages.len(),
-            ftl_path.display()
-        );
+        eprintln!("wrote {} messages → {}", messages.len(), ftl_path.display());
     }
 
     Ok(())

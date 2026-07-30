@@ -140,10 +140,7 @@ pub fn read_translations_csv(raw: &[u8], path: &Path) -> Result<CsvTable, String
         let record = match result {
             Ok(r) => r,
             Err(e) => {
-                eprintln!(
-                    "warning: skipping malformed CSV row {}: {e}",
-                    row_num + 2
-                );
+                eprintln!("warning: skipping malformed CSV row {}: {e}", row_num + 2);
                 continue;
             }
         };

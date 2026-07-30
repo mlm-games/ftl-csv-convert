@@ -36,9 +36,7 @@ fn polyglot_sample_csv2ftl_then_ftl2csv() {
         en.contains("ERROR_DEVICE_NOT_FOUND = No {0} detected."),
         "Godot {{0}} placeholder must survive:\n{en}"
     );
-    assert!(
-        en.contains("# Use {0} in place of [device]") || en.contains("Use {0}")
-    );
+    assert!(en.contains("# Use {0} in place of [device]") || en.contains("Use {0}"));
 
     assert!(locales.join("fr/main.ftl").is_file());
 

@@ -252,10 +252,7 @@ bye = Goodbye
     #[test]
     fn roundtrip_godot_placeholder() {
         let mut msgs = Messages::new();
-        msgs.insert(
-            "ERROR_DEVICE_NOT_FOUND".into(),
-            "No {0} detected.".into(),
-        );
+        msgs.insert("ERROR_DEVICE_NOT_FOUND".into(), "No {0} detected.".into());
         let s = render_ftl(&msgs, &Contexts::new());
         assert!(s.contains("No {0} detected."));
         let p = parse_ftl_file(&s, Path::new("t.ftl"));
