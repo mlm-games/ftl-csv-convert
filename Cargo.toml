@@ -1,6 +1,6 @@
 [package]
 name = "ftl-csv-convert"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 description = "Convert between Fluent (.ftl) locale trees and a single CSV (Godot/polyglot-compatible)"
 license = "MIT OR Apache-2.0"
