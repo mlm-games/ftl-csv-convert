@@ -236,9 +236,10 @@ fn cmd_csv2ftl(locales_dir: &Path, csv_path: &Path) -> Result<(), String> {
                 continue;
             }
             if let Some(v) = table.translations.get(key).and_then(|m| m.get(loc))
-                && !v.is_empty() {
-                    messages.insert(key.clone(), v.clone());
-                }
+                && !v.is_empty()
+            {
+                messages.insert(key.clone(), v.clone());
+            }
         }
 
         let dir = locales_dir.join(loc);

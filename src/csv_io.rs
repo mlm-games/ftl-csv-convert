@@ -161,12 +161,13 @@ pub fn read_translations_csv(raw: &[u8], path: &Path) -> Result<CsvTable, String
         keys.insert(key.to_string());
 
         if let Some(ci) = context_idx
-            && let Some(c) = record.get(ci) {
-                let c = c.trim();
-                if !c.is_empty() {
-                    contexts.insert(key.to_string(), c.to_string());
-                }
+            && let Some(c) = record.get(ci)
+        {
+            let c = c.trim();
+            if !c.is_empty() {
+                contexts.insert(key.to_string(), c.to_string());
             }
+        }
 
         let mut row_map = BTreeMap::new();
         for (col, loc) in &locale_cols {
